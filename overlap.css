@@ -1,0 +1,33 @@
+#canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: 1px solid #000000;
+  z-index: 1;
+}
+
+#background-canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border: 1px solid #000000;
+  z-index: 0;
+}
+
+#canvas-container {
+  position: relative;
+  display: inline-block;
+  width: 600px;
+  height: 600px;
+}
+
+#game-container {
+  display: inline-flex;
+}
+
+#msg {
+  display: none;
+  position: absolute;
+  left: 300px;
+  top: 10%;
+}
