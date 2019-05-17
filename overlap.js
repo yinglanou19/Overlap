@@ -30,7 +30,7 @@ let triObj = {
   c: { x: 200, y: 300 },
   centerX: 233.33, // center is calculated by [(ax+bx+cx)/3 , (ay+by+cy)/3]
   centerY: 233.33,
-  color: "pink",
+  color: "lightyellow",
   angle: 0,
   type: "triangle"
 };
@@ -47,7 +47,7 @@ let rectObj2 = {
   type: "rectangle"
 };
 
-let shapeArr = [rectObj2, rectObj, triObj];
+let shapeArr = [rectObj2, rectObj];
 redraw();
 let selectedShape;
 
@@ -326,6 +326,7 @@ function redraw() {
 const ans = [
   { type: "rectangle", x: 0, y: 0, w: 90, h: 90, checked: false },
   { type: "rectangle", x: 30, y: 30, w: 90, h: 90, checked: false }
+  // {type:"triangle",}
 ];
 
 function checkComplete(sarr, answer) {
@@ -336,9 +337,14 @@ function checkComplete(sarr, answer) {
       answer[j].checked = false;
     }
     if (sarr[i].type === answer[0].type) {
-      //switch
-      // assume they are all rect
-      if (sarr[i].w === answer[0].w && sarr[i].h === answer[0].h) {
+      if (
+        (answer[0].type === "rectangle" &&
+          sarr[i].w === answer[0].w &&
+          sarr[i].h === answer[0].h) ||
+        (answer[0].type === "triangle" &&
+          sarr[i].b.x - sarr[i].a.x === answer[0].b.x - answer[0].a.x &&
+          sarr[i].c.x - sarr[i].a.x === answer[0].c.x - answer[0].a.x)
+      ) {
         ansOffsetX = sarr[i].centerX;
         ansOffsetY = sarr[i].centerY;
         sarr.forEach(shape => {
@@ -348,12 +354,16 @@ function checkComplete(sarr, answer) {
           // same type, same size, and same position angle
           for (let j = 0; j < answer.length; j++) {
             if (!answer[j].checked && answer[j].type === shape.type) {
-              // switch
+              //TODO: need to check the switch here
               if (
-                answer[j].w === shape.w &&
-                answer[j].h === shape.h &&
-                relativeX === answer[j].x &&
-                relativeY === answer[j].y
+                (answer[j] === "rectangle" &&
+                  answer[j].w === shape.w &&
+                  answer[j].h === shape.h &&
+                  relativeX === answer[j].x &&
+                  relativeY === answer[j].y) ||
+                (answer[j] === "triangle" &&
+                  shape.b.x - shape.a.x === answer[j].b.x - answer[j].a.x &&
+                  shape.c.x - shape.a.x === answer[j].c.x - answer[j].a.x)
               ) {
                 answer[j].checked = true;
                 break;
