@@ -104,12 +104,8 @@ function getSelectedShape(x, y) {
   shapeArr.forEach(shape => {
     switch (shape.type) {
       case "rectangle":
-        // rectWrap(shape);
-        ctx.beginPath();
-        ctx.translate(shape.centerX, shape.centerY);
-        ctx.rotate((shape.angle * Math.PI) / 180);
-        ctx.translate(-shape.centerX, -shape.centerY);
-        ctx.rect(shape.x, shape.y, shape.w, shape.h);
+        rectWrap(shape);
+
         break;
       case "triangle":
         triWrap(shape);

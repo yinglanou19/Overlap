@@ -54,7 +54,10 @@ header {
 }
 
 #timer {
-  height: 5%;
+  height: 50px;
+  border: 1px solid black;
+  border-radius: 10px;
+  text-align: center;
 }
 
 #instruction-container {
@@ -81,6 +84,7 @@ button {
   color: white;
   font-size: 22px;
   margin: 5px;
+  border: none;
   border-radius: 10px;
 }
 
