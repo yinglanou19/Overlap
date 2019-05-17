@@ -1,3 +1,6 @@
+/* body {
+  background: rgb(247, 244, 232);
+} */
 #canvas {
   position: absolute;
   left: 0;
@@ -37,7 +40,7 @@
 
 header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 #logo {
   font-family: "Sigmar One", cursive;
@@ -59,10 +62,28 @@ header {
   padding: 15px;
 }
 
-#instruction-container p {
-  font-family: "Sigmar One", cursive;
+#instruction-container :nth-child(2) {
+  font-family: fantasy;
 }
 
 #instruction-text-title {
+  font-family: "Sigmar One", cursive;
   font-size: 26px;
+  color: rgb(91, 132, 198);
+}
+
+#buttons {
+  justify-content: space-around;
+}
+button {
+  font-family: "Sigmar One", cursive;
+  background: rgb(141, 179, 239);
+  color: white;
+  font-size: 22px;
+  margin: 5px;
+  border-radius: 10px;
+}
+
+button:hover {
+  background: rgb(92, 149, 242);
 }
