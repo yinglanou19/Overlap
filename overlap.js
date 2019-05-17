@@ -30,7 +30,7 @@ let triObj = {
   c: { x: 200, y: 300 },
   centerX: 233.33, // center is calculated by [(ax+bx+cx)/3 , (ay+by+cy)/3]
   centerY: 233.33,
-  color: "lightyellow",
+  color: "yellow",
   angle: 0,
   type: "triangle"
 };
@@ -47,7 +47,7 @@ let rectObj2 = {
   type: "rectangle"
 };
 
-let shapeArr = [rectObj2, rectObj];
+let shapeArr = [rectObj2, rectObj, triObj];
 redraw();
 let selectedShape;
 
@@ -161,6 +161,8 @@ canvas.onmouseup = function(e) {
         selectedShape.centerY = selectedShape.y + selectedShape.h / 2;
         break;
       case "triangle":
+        // TODO: need to modify:   selectedShape.a   b   c
+        //                   selectedShape.centerX    centerY
         break;
     }
   }
@@ -356,12 +358,12 @@ function checkComplete(sarr, answer) {
             if (!answer[j].checked && answer[j].type === shape.type) {
               //TODO: need to check the switch here
               if (
-                (answer[j] === "rectangle" &&
+                (answer[j].type === "rectangle" &&
                   answer[j].w === shape.w &&
                   answer[j].h === shape.h &&
                   relativeX === answer[j].x &&
                   relativeY === answer[j].y) ||
-                (answer[j] === "triangle" &&
+                (answer[j].type === "triangle" &&
                   shape.b.x - shape.a.x === answer[j].b.x - answer[j].a.x &&
                   shape.c.x - shape.a.x === answer[j].c.x - answer[j].a.x)
               ) {
