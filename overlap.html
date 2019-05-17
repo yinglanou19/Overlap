@@ -5,23 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="overlap.css" />
-    <title>Document</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Sigmar+One&display=swap"
+      rel="stylesheet"
+    />
+    <title>Overlap</title>
   </head>
   <body>
-    <div id="game-container">
-      <div id="canvas-container">
-        <canvas id="canvas"></canvas>
-        <canvas id="background-canvas"></canvas>
-      </div>
+    <header>
+      <div id="logo">OVERLAP</div>
       <div>
-        <p><b>LEVEL 1</b></p>
-        <img src="level1.jpeg" />
+        <a href="https://github.com/yinglanou19/Overlap"
+          ><img id="github-logo" src="github-icon.png"
+        /></a>
       </div>
-    </div>
-    <div id="msg">complete</div>
-    <div>
-      <button onClick="setRotateMode()">Rotate</button>
-      <button onClick="setDragMode()">Drag</button>
+    </header>
+    <div id="content-container">
+      <div id="game-container">
+        <div id="instruction-container">
+          <p id="instruction-text-title">
+            instruction
+          </p>
+          <p>
+            This is how you play this game. step1.... two2.2..ejoe nefn
+            overlap. efejofieooe. theofoeifjif jeofioefifjoifjoef</br>jfeofieofefoefjfof</br>
+          </p>
+        </div>
+        <div id="canvas-container">
+          <canvas id="canvas"></canvas>
+          <canvas id="background-canvas"></canvas>
+        </div>
+        <div id="right-panel">
+          <div id="timer">00:00:00</div>
+          <div>
+            <img src="level1.jpeg" />
+          </div>
+        </div>
+      </div>
+
+      <div id="msg">complete</div>
+
+      <div>
+        <button onClick="setRotateMode()">Rotate</button>
+        <button onClick="setDragMode()">Drag</button>
+      </div>
     </div>
   </body>
   <script type="text/javascript" src="overlap.js"></script>

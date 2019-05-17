@@ -20,9 +20,12 @@
   width: 600px;
   height: 600px;
 }
-
+#content-container {
+  text-align: center;
+}
 #game-container {
   display: inline-flex;
+  /* background: greenyellow; */
 }
 
 #msg {
@@ -30,4 +33,36 @@
   position: absolute;
   left: 300px;
   top: 10%;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+}
+#logo {
+  font-family: "Sigmar One", cursive;
+  font-size: 60px;
+  color: rgb(83, 125, 193);
+}
+
+#github-logo {
+  height: 100px;
+  width: 100px;
+}
+
+#timer {
+  height: 5%;
+}
+
+#instruction-container {
+  width: 200px;
+  padding: 15px;
+}
+
+#instruction-container p {
+  font-family: "Sigmar One", cursive;
+}
+
+#instruction-text-title {
+  font-size: 26px;
 }

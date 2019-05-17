@@ -13,12 +13,12 @@ let angleSpacing = 45;
 drawGrid(gridSpacing);
 
 let rectObj = {
-  x: 70,
-  y: 20,
+  x: 90,
+  y: 30,
   w: 90,
   h: 90,
-  centerX: 115,
-  centerY: 65,
+  centerX: 135,
+  centerY: 75,
   color: "lightblue",
   angle: 0,
   type: "rectangle"
@@ -36,13 +36,13 @@ let triObj = {
 };
 
 let rectObj2 = {
-  x: 200,
-  y: 200,
+  x: 210,
+  y: 210,
   w: 90,
   h: 90,
-  centerX: 245,
-  centerY: 245,
-  color: "lightblue",
+  centerX: 255,
+  centerY: 255,
+  color: "pink",
   angle: 0,
   type: "rectangle"
 };
