@@ -31,6 +31,10 @@
   /* background: greenyellow; */
 }
 
+#right-panel {
+  margin-left: 20px;
+}
+
 #msg {
   display: none;
   position: absolute;

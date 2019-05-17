@@ -47,7 +47,7 @@ let rectObj2 = {
   type: "rectangle"
 };
 
-let shapeArr = [rectObj2, rectObj];
+let shapeArr = [rectObj2, rectObj, triObj];
 redraw();
 let selectedShape;
 
@@ -165,6 +165,11 @@ canvas.onmouseup = function(e) {
     }
   }
   redraw();
+  // TODO: delete selectedshape from the array and insert it to the beginning
+  let topElementIdx = shapeArr.indexOf(selectedShape);
+  shapeArr.splice(topElementIdx, 1);
+  shapeArr.push(selectedShape);
+  // end
 
   if (checkComplete(shapeArr, ans)) {
     document.getElementById("msg").style.display = "block";
@@ -307,8 +312,6 @@ function drawGrid(gridSpacing) {
 function redraw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   shapeArr.forEach(shape => {
-    // drawRect(shape);
-
     switch (shape.type) {
       case "rectangle":
         drawRect(shape);
