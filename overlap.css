@@ -150,3 +150,8 @@ button:hover {
   /* text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
     1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff; */
 }
+
+#solution-img {
+  border-radius: 30%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
