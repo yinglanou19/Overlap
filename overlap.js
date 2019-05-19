@@ -3,7 +3,6 @@ canvas.width = 600;
 canvas.height = 600;
 const ctx = canvas.getContext("2d");
 ctx.globalCompositeOperation = "xor";
-const containerOffset = canvas.parentElement.getBoundingClientRect();
 const backgroundcanvas = document.getElementById("background-canvas");
 backgroundcanvas.width = 600;
 backgroundcanvas.height = 600;
@@ -19,18 +18,18 @@ let rectObj = {
   h: 90,
   centerX: 135,
   centerY: 75,
-  color: "lightblue",
+  color: "red",
   angle: 0,
   type: "rectangle"
 };
 
 let triObj = {
-  a: { x: 200, y: 200 },
-  b: { x: 300, y: 200 },
-  c: { x: 200, y: 300 },
-  centerX: 233.33, // center is calculated by [(ax+bx+cx)/3 , (ay+by+cy)/3]
-  centerY: 233.33,
-  color: "yellow",
+  a: { x: 210, y: 210 }, // right angle..
+  b: { x: 300, y: 210 },
+  c: { x: 210, y: 300 },
+  centerX: 255, // center is calculated by [(ax+bx+cx)/3 , (ay+by+cy)/3]
+  centerY: 255,
+  color: "red",
   angle: 0,
   type: "triangle"
 };
@@ -42,7 +41,7 @@ let rectObj2 = {
   h: 90,
   centerX: 255,
   centerY: 255,
-  color: "pink",
+  color: "blue",
   angle: 0,
   type: "rectangle"
 };
@@ -123,8 +122,8 @@ let offsetx;
 let offsety;
 
 canvas.onmousedown = function(e) {
-  const x = e.x - containerOffset.left;
-  const y = e.y - containerOffset.top;
+  const x = e.x - canvas.parentElement.getBoundingClientRect().left;
+  const y = e.y - canvas.parentElement.getBoundingClientRect().top;
   selectedShape = getSelectedShape(x, y);
   if (selectedShape) {
     switch (selectedShape.type) {
@@ -163,30 +162,45 @@ canvas.onmouseup = function(e) {
       case "triangle":
         // TODO: need to modify:   selectedShape.a   b   c
         //                   selectedShape.centerX    centerY
+        const triangleOffsetX =
+          selectedShape.a.x -
+          Math.round(selectedShape.a.x / gridSpacing) * gridSpacing;
+        const triangleOffsetY =
+          selectedShape.a.y -
+          Math.round(selectedShape.a.y / gridSpacing) * gridSpacing;
+        selectedShape.a.x -= triangleOffsetX;
+        selectedShape.a.y -= triangleOffsetY;
+        selectedShape.b.x -= triangleOffsetX;
+        selectedShape.b.y -= triangleOffsetY;
+        selectedShape.c.x -= triangleOffsetX;
+        selectedShape.c.y -= triangleOffsetY;
+        selectedShape.centerX -= triangleOffsetX;
+        selectedShape.centerY -= triangleOffsetY;
         break;
     }
   }
+  selectedShape.angle = ((selectedShape.angle % 360) + 360) % 360;
   redraw();
-  // TODO: delete selectedshape from the array and insert it to the beginning
   let topElementIdx = shapeArr.indexOf(selectedShape);
   shapeArr.splice(topElementIdx, 1);
   shapeArr.push(selectedShape);
   // end
 
-  if (checkComplete(shapeArr, ans)) {
+  if (checkComplete(shapeArr, l2)) {
     document.getElementById("msg").style.display = "block";
   } else {
     document.getElementById("msg").style.display = "none";
   }
   isMouseDown = false;
+  console.log(selectedShape);
 };
 
 canvas.onmousemove = function(e) {
   if (!isMouseDown || !selectedShape) {
     return;
   }
-  const x = e.x - containerOffset.left;
-  const y = e.y - containerOffset.top;
+  const x = e.x - canvas.parentElement.getBoundingClientRect().left;
+  const y = e.y - canvas.parentElement.getBoundingClientRect().top;
   if (isRotate) {
     const b = Math.sqrt(
       Math.pow(Math.abs(previousX - selectedShape.centerX), 2) +
@@ -276,8 +290,8 @@ function moveTriangle(tri, x, y) {
   tri.b.y = tri.a.y + offsetby;
   tri.c.x = tri.a.x + offsetcx;
   tri.c.y = tri.a.y + offsetcy;
-  tri.centerX = (tri.a.x + tri.b.x + tri.c.x) / 3;
-  tri.centerY = (tri.a.y + tri.b.y + tri.c.y) / 3;
+  tri.centerX = tri.a.x + (tri.b.x - tri.a.x) / 2;
+  tri.centerY = tri.a.y + (tri.c.y - tri.a.y) / 2;
 }
 
 function moveRect(rect, x, y) {
@@ -326,8 +340,22 @@ function redraw() {
 }
 
 const ans = [
-  { type: "rectangle", x: 0, y: 0, w: 90, h: 90, checked: false },
-  { type: "rectangle", x: 30, y: 30, w: 90, h: 90, checked: false }
+  { type: "rectangle", x: 0, y: 0, w: 90, h: 90, angle: 0, checked: false },
+  { type: "rectangle", x: 30, y: 30, w: 90, h: 90, angle: 0, checked: false }
+  // {type:"triangle",}
+];
+
+const l2 = [
+  { type: "rectangle", x: 0, y: 0, w: 90, h: 90, angle: 0, checked: false },
+  { type: "rectangle", x: 30, y: 30, w: 90, h: 90, angle: 0, checked: false },
+  {
+    a: { x: 30, y: 30 },
+    b: { x: 120, y: 30 },
+    c: { x: 30, y: 120 },
+    angle: 180,
+    type: "triangle",
+    checked: false
+  }
   // {type:"triangle",}
 ];
 
@@ -339,14 +367,36 @@ function checkComplete(sarr, answer) {
       answer[j].checked = false;
     }
     if (sarr[i].type === answer[0].type) {
-      if (
-        (answer[0].type === "rectangle" &&
-          sarr[i].w === answer[0].w &&
-          sarr[i].h === answer[0].h) ||
-        (answer[0].type === "triangle" &&
-          sarr[i].b.x - sarr[i].a.x === answer[0].b.x - answer[0].a.x &&
-          sarr[i].c.x - sarr[i].a.x === answer[0].c.x - answer[0].a.x)
-      ) {
+      let originFound = false;
+      switch (answer[0].type) {
+        case "rectangle":
+          if (sarr[i].w === answer[0].w && sarr[i].h === answer[0].h) {
+            if (sarr[i].w !== sarr[i].h) {
+              if (
+                sarr[i].angle === answer[0].angle ||
+                sarr[i].angle === answer[0].angle + 180
+              ) {
+                originFound = true;
+              }
+            } else {
+              if (sarr[i].angle % 90 === answer[0].angle) {
+                originFound = true;
+              }
+            }
+          }
+          break;
+        case "triangle":
+          if (
+            sarr[i].b.x - sarr[i].a.x === answer[j].b.x - answer[j].a.x &&
+            sarr[i].c.x - sarr[i].a.x === answer[j].c.x - answer[j].a.x &&
+            ((sarr[i].angle % 360) + 360) % 360 === answer[0].angle
+          ) {
+            originFound = true;
+          }
+          break;
+      }
+
+      if (originFound) {
         ansOffsetX = sarr[i].centerX;
         ansOffsetY = sarr[i].centerY;
         sarr.forEach(shape => {
@@ -357,6 +407,7 @@ function checkComplete(sarr, answer) {
           for (let j = 0; j < answer.length; j++) {
             if (!answer[j].checked && answer[j].type === shape.type) {
               //TODO: need to check the switch here
+
               if (
                 (answer[j].type === "rectangle" &&
                   answer[j].w === shape.w &&
@@ -367,7 +418,29 @@ function checkComplete(sarr, answer) {
                   shape.b.x - shape.a.x === answer[j].b.x - answer[j].a.x &&
                   shape.c.x - shape.a.x === answer[j].c.x - answer[j].a.x)
               ) {
-                answer[j].checked = true;
+                switch (answer[j].type) {
+                  case "rectangle":
+                    if (shape.w !== shape.h) {
+                      if (
+                        shape.angle === answer[j].angle ||
+                        shape.angle === answer[j].angle + 180
+                      ) {
+                        answer[j].checked = true;
+                      }
+                    } else {
+                      if (shape.angle % 90 === answer[j].angle) {
+                        answer[j].checked = true;
+                      }
+                    }
+
+                    break;
+                  case "triangle":
+                    if (shape.angle === answer[j].angle) {
+                      answer[j].checked = true;
+                    }
+                    break;
+                }
+
                 break;
               }
             }
@@ -390,3 +463,10 @@ function checkComplete(sarr, answer) {
   }
   return false;
 }
+
+//TODO: timer!!!
+// var timer = new Timer();
+// timer.start();
+// timer.addEventListener("secondsUpdated", function(e) {
+//   $("#timer").html(timer.getTimeValues().toString());
+// });

@@ -32,7 +32,7 @@
 }
 
 #right-panel {
-  margin-left: 20px;
+  margin: 20px;
 }
 
 #msg {
@@ -44,6 +44,7 @@
 
 header {
   display: flex;
+
   justify-content: space-around;
 }
 #logo {
@@ -53,15 +54,25 @@ header {
 }
 
 #github-logo {
+  width: 100%;
+  height: 100%;
+}
+
+#github-logo-container {
   height: 100px;
   width: 100px;
 }
 
 #timer {
+  font-family: "Sigmar One", cursive;
+  font-size: 30px;
+  background: rgb(91, 132, 198);
+  color: white;
   height: 50px;
-  border: 1px solid black;
   border-radius: 10px;
   text-align: center;
+  box-shadow: 5px 5px 5px rgb(108, 124, 150);
+  margin-bottom: 35px;
 }
 
 #instruction-container {
@@ -90,8 +101,10 @@ button {
   margin: 5px;
   border: none;
   border-radius: 10px;
+  box-shadow: 5px 5px 5px rgb(108, 124, 150);
 }
 
 button:hover {
   background: rgb(92, 149, 242);
+  cursor: pointer;
 }
