@@ -1,19 +1,41 @@
-/* body {
-  background: rgb(247, 244, 232);
-} */
+body {
+  /* background: rgb(212, 226, 249); */
+  background-image: url("images/background.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* font-family: fantasy; */
+}
+
 #canvas {
   position: absolute;
   left: 0;
   top: 0;
-  border: 1px solid #000000;
+  /* border: 1px solid #000000; */
   z-index: 1;
 }
-
+#prompt-container {
+  z-index: 3;
+  display: none;
+  /* position: absolute;
+  left: 40%;
+  top: 30%; */
+  position: relative;
+  width: 250px;
+  margin: auto;
+  padding: 30px 50px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  font-family: "Sigmar One", cursive;
+  text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
+    1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+  background: rgba(255, 255, 255, 0.8);
+}
 #background-canvas {
   position: absolute;
   left: 0;
   top: 0;
-  border: 1px solid #000000;
+  /* border: 1px solid #000000; */
   z-index: 0;
 }
 
@@ -21,7 +43,10 @@
   position: relative;
   display: inline-block;
   width: 600px;
-  height: 600px;
+  height: 400px;
+  background: white;
+  /* border: 1px solid black; */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 #content-container {
   text-align: center;
@@ -33,13 +58,7 @@
 
 #right-panel {
   margin: 20px;
-}
-
-#msg {
-  display: none;
-  position: absolute;
-  left: 300px;
-  top: 10%;
+  width: 200px;
 }
 
 header {
@@ -51,6 +70,8 @@ header {
   font-family: "Sigmar One", cursive;
   font-size: 60px;
   color: rgb(83, 125, 193);
+  text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
+    1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
 }
 
 #github-logo {
@@ -76,12 +97,23 @@ header {
 }
 
 #instruction-container {
-  width: 200px;
-  padding: 15px;
+  width: 210px;
+  padding: 15px 30px;
+}
+
+#instruction-board {
+  background: rgb(232, 237, 244);
+  border-radius: 10px;
+  padding: 0 5px 10px 5px;
+
+  box-shadow: 5px 5px 5px rgba(183, 192, 207, 0.6);
+  text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
+    1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
 }
 
 #instruction-container :nth-child(2) {
   font-family: fantasy;
+  font-size: 20px;
 }
 
 #instruction-text-title {
@@ -91,6 +123,7 @@ header {
 }
 
 #buttons {
+  margin-top: 10px;
   justify-content: space-around;
 }
 button {
@@ -107,4 +140,12 @@ button {
 button:hover {
   background: rgb(92, 149, 242);
   cursor: pointer;
+}
+
+#level-number {
+  font-family: "Sigmar One", cursive;
+  font-size: 28px;
+  color: rgb(112, 115, 119);
+  /* text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff,
+    1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff; */
 }

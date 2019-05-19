@@ -10,7 +10,6 @@
       rel="stylesheet"
     />
     <title>Overlap</title>
-
   </head>
   <body>
     <header>
@@ -24,27 +23,38 @@
     <div id="content-container">
       <div id="game-container">
         <div id="instruction-container">
-          <p id="instruction-text-title">
-            instruction
-          </p>
-          <p>
-            This is how you play this game. step1.... two2.2..ejoe nefn
-            overlap. efejofieooe. theofoeifjif jeofioefifjoifjoef</br>jfeofieofefoefjfof</br>
-          </p>
+          <div id="instruction-board">
+            <p id="instruction-text-title">
+              instruction
+            </p>
+            <p>
+              Drag or rotate the shapes to achieve the same pattern as the
+              picture on the right! Overlapping an even number of shapes will
+              make the part disappear!
+            </p>
+          </div>
         </div>
         <div id="canvas-container">
+          <div id="level-number">
+            Level: 1
+          </div>
+          <div id="prompt-container">
+            <p id="msg">You finish this level!</p>
+            <button onClick="nextLevel()">
+              Next
+            </button>
+          </div>
           <canvas id="canvas"></canvas>
           <canvas id="background-canvas"></canvas>
         </div>
         <div id="right-panel">
           <div id="timer">00:00:00</div>
+
           <div>
-            <img src="images/level1.jpeg" />
+            <img id="solution-img" />
           </div>
         </div>
       </div>
-
-      <div id="msg">complete</div>
 
       <div id="buttons">
         <button onClick="setRotateMode()">Rotate</button>
@@ -52,10 +62,8 @@
         <button onClick="startGame()">Start</button>
       </div>
     </div>
-
   </body>
-<script type="text/javascript" src="timer.js"></script>
-<script type="text/javascript" src="overlap.js"></script>
-
-
+  <script type="text/javascript" src="maps.js"></script>
+  <script type="text/javascript" src="timer.js"></script>
+  <script type="text/javascript" src="overlap.js"></script>
 </html>

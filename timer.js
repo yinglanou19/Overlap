@@ -4,8 +4,13 @@ class Timer {
     this.timerDiv = document.getElementById(id);
     this.timerDiv.innerHTML = "00:00:00";
     this.seconds = 0;
+    this.interval = null;
   }
-
+  reset() {
+    this.seconds = 0;
+    this.stop();
+    this.timerDiv.innerHTML = "00:00:00";
+  }
   setTime() {
     this.seconds += 1;
     let hour = Math.floor(this.seconds / 3600);
@@ -23,6 +28,11 @@ class Timer {
     this.timerDiv.innerHTML = hour + ":" + minute + ":" + sec;
   }
   start() {
-    setInterval(() => this.setTime(), 1000);
+    this.reset();
+    this.interval = setInterval(() => this.setTime(), 1000);
+  }
+
+  stop() {
+    clearInterval(this.interval);
   }
 }

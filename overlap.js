@@ -1,52 +1,16 @@
 const canvas = document.getElementById("canvas");
 canvas.width = 600;
-canvas.height = 600;
+canvas.height = 400;
 const ctx = canvas.getContext("2d");
 ctx.globalCompositeOperation = "xor";
 const backgroundcanvas = document.getElementById("background-canvas");
 backgroundcanvas.width = 600;
-backgroundcanvas.height = 600;
+backgroundcanvas.height = 400;
 const bgrctx = backgroundcanvas.getContext("2d");
 let gridSpacing = 30;
 let angleSpacing = 45;
 drawGrid(gridSpacing);
-
-let rectObj = {
-  x: 90,
-  y: 30,
-  w: 90,
-  h: 90,
-  centerX: 135,
-  centerY: 75,
-  color: "red",
-  angle: 0,
-  type: "rectangle"
-};
-
-let triObj = {
-  a: { x: 210, y: 210 }, // right angle..
-  b: { x: 300, y: 210 },
-  c: { x: 210, y: 300 },
-  centerX: 255, // center is calculated by [(ax+bx+cx)/3 , (ay+by+cy)/3]
-  centerY: 255,
-  color: "red",
-  angle: 0,
-  type: "triangle"
-};
-
-let rectObj2 = {
-  x: 210,
-  y: 210,
-  w: 90,
-  h: 90,
-  centerX: 255,
-  centerY: 255,
-  color: "blue",
-  angle: 0,
-  type: "rectangle"
-};
-
-let shapeArr = [rectObj2, rectObj, triObj];
+let level = 0;
 let selectedShape;
 
 let isRotate = false;
@@ -97,7 +61,7 @@ function triWrap(tri) {
   ctx.lineTo(tri.c.x, tri.c.y);
   ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
-function getSelectedShape(x, y) {
+function getSelectedShape(shapeArr, x, y) {
   let s = null;
   shapeArr.forEach(shape => {
     switch (shape.type) {
@@ -123,7 +87,7 @@ let offsety;
 canvas.onmousedown = function(e) {
   const x = e.x - canvas.parentElement.getBoundingClientRect().left;
   const y = e.y - canvas.parentElement.getBoundingClientRect().top;
-  selectedShape = getSelectedShape(x, y);
+  selectedShape = getSelectedShape(maps[level].resource, x, y);
   if (selectedShape) {
     switch (selectedShape.type) {
       case "rectangle":
@@ -159,8 +123,6 @@ canvas.onmouseup = function(e) {
         selectedShape.centerY = selectedShape.y + selectedShape.h / 2;
         break;
       case "triangle":
-        // TODO: need to modify:   selectedShape.a   b   c
-        //                   selectedShape.centerX    centerY
         const triangleOffsetX =
           selectedShape.a.x -
           Math.round(selectedShape.a.x / gridSpacing) * gridSpacing;
@@ -179,16 +141,17 @@ canvas.onmouseup = function(e) {
     }
   }
   selectedShape.angle = ((selectedShape.angle % 360) + 360) % 360;
-  redraw();
-  let topElementIdx = shapeArr.indexOf(selectedShape);
-  shapeArr.splice(topElementIdx, 1);
-  shapeArr.push(selectedShape);
+  redraw(maps[level].resource);
+  let topElementIdx = maps[level].resource.indexOf(selectedShape);
+  maps[level].resource.splice(topElementIdx, 1);
+  maps[level].resource.push(selectedShape);
   // end
 
-  if (checkComplete(shapeArr, l2)) {
-    document.getElementById("msg").style.display = "block";
+  if (checkComplete(maps[level].resource, maps[level].answer)) {
+    document.getElementById("prompt-container").style.display = "block";
+    overlapTimer.stop();
   } else {
-    document.getElementById("msg").style.display = "none";
+    document.getElementById("prompt-container").style.display = "none";
   }
   isMouseDown = false;
   console.log(selectedShape);
@@ -273,7 +236,7 @@ canvas.onmousemove = function(e) {
         break;
     }
   }
-  redraw();
+  redraw(maps[level].resource);
   previousX = x;
   previousY = y;
 };
@@ -324,7 +287,7 @@ function drawGrid(gridSpacing) {
   bgrctx.stroke();
 }
 
-function redraw() {
+function redraw(shapeArr) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   shapeArr.forEach(shape => {
     switch (shape.type) {
@@ -337,26 +300,6 @@ function redraw() {
     }
   });
 }
-
-const ans = [
-  { type: "rectangle", x: 0, y: 0, w: 90, h: 90, angle: 0, checked: false },
-  { type: "rectangle", x: 30, y: 30, w: 90, h: 90, angle: 0, checked: false }
-  // {type:"triangle",}
-];
-
-const l2 = [
-  { type: "rectangle", x: 0, y: 0, w: 90, h: 90, angle: 0, checked: false },
-  { type: "rectangle", x: 30, y: 30, w: 90, h: 90, angle: 0, checked: false },
-  {
-    a: { x: 30, y: 30 },
-    b: { x: 120, y: 30 },
-    c: { x: 30, y: 120 },
-    angle: 180,
-    type: "triangle",
-    checked: false
-  }
-  // {type:"triangle",}
-];
 
 function checkComplete(sarr, answer) {
   let ansOffsetX = 0;
@@ -415,7 +358,9 @@ function checkComplete(sarr, answer) {
                   relativeY === answer[j].y) ||
                 (answer[j].type === "triangle" &&
                   shape.b.x - shape.a.x === answer[j].b.x - answer[j].a.x &&
-                  shape.c.x - shape.a.x === answer[j].c.x - answer[j].a.x)
+                  shape.c.x - shape.a.x === answer[j].c.x - answer[j].a.x &&
+                  relativeX === answer[j].a.x &&
+                  relativeY === answer[j].a.y)
               ) {
                 switch (answer[j].type) {
                   case "rectangle":
@@ -463,9 +408,24 @@ function checkComplete(sarr, answer) {
   return false;
 }
 
-const t = new Timer("timer");
-function startGame() {
-  redraw();
+function nextLevel() {
+  if (level === maps.length - 1) {
+    document.getElementById("msg").innerHTML = "You have completed all levels!";
+    level = -1;
+  } else {
+    level += 1;
+    document.getElementById("level-number").innerHTML = "Level: " + (level + 1);
+    document.getElementById("solution-img").src = "";
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    overlapTimer.reset();
+    document.getElementById("prompt-container").style.display = "none";
+  }
+}
 
-  t.start();
+const overlapTimer = new Timer("timer");
+function startGame() {
+  document.getElementById("solution-img").src = maps[level].solutionImg;
+  redraw(maps[level].resource);
+
+  overlapTimer.start();
 }
