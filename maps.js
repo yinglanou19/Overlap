@@ -1,0 +1,4 @@
+const maps = {
+  missions: [],
+  answers: []
+};

@@ -47,7 +47,6 @@ let rectObj2 = {
 };
 
 let shapeArr = [rectObj2, rectObj, triObj];
-redraw();
 let selectedShape;
 
 let isRotate = false;
@@ -464,9 +463,9 @@ function checkComplete(sarr, answer) {
   return false;
 }
 
-//TODO: timer!!!
-// var timer = new Timer();
-// timer.start();
-// timer.addEventListener("secondsUpdated", function(e) {
-//   $("#timer").html(timer.getTimeValues().toString());
-// });
+const t = new Timer("timer");
+function startGame() {
+  redraw();
+
+  t.start();
+}
