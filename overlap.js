@@ -308,6 +308,7 @@ function checkComplete(sarr, answer) {
     for (let j = 0; j < answer.length; j++) {
       answer[j].checked = false;
     }
+
     if (sarr[i].type === answer[0].type) {
       let originFound = false;
       switch (answer[0].type) {
@@ -329,8 +330,8 @@ function checkComplete(sarr, answer) {
           break;
         case "triangle":
           if (
-            sarr[i].b.x - sarr[i].a.x === answer[j].b.x - answer[j].a.x &&
-            sarr[i].c.x - sarr[i].a.x === answer[j].c.x - answer[j].a.x &&
+            sarr[i].b.x - sarr[i].a.x === answer[0].b.x - answer[0].a.x &&
+            sarr[i].c.x - sarr[i].a.x === answer[0].c.x - answer[0].a.x &&
             ((sarr[i].angle % 360) + 360) % 360 === answer[0].angle
           ) {
             originFound = true;
